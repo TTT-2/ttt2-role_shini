@@ -60,7 +60,7 @@ if CLIENT then
 		-- draw bg and shadow
 		self.drawer:DrawBg(x, y, w, h, self.basecolor)
 
-		self.drawer:AdvancedText(self.elements[i].name, "PureSkinWep", x + 10 + self.element_height, y + self.element_height * 0.5, COLOR_RED, nil, TEXT_ALIGN_CENTER, true, self.scale)
+		draw.AdvancedText(self.elements[i].name, "PureSkinWep", x + 10 + self.element_height, y + self.element_height * 0.5, COLOR_RED, nil, TEXT_ALIGN_CENTER, true, self.scale)
 
 		-- draw lines around the element
 		self.drawer:DrawLines(x, y, w, h, self.basecolor.a)

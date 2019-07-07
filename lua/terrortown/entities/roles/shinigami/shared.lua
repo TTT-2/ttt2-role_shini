@@ -90,7 +90,7 @@ if SERVER then
 			-- revive after 3s
 			victim:Revive(3, function(p) -- this is a TTT2 function that will handle everything else
 				p:StripWeapons()
-				p:Give("weapon_ttt_knife")
+				p:Give("weapon_ttt_shinigamiknife")
 				p.SpawnedAsShinigami = CurTime()
 				SendFullStateUpdate()
 			end,
@@ -103,7 +103,7 @@ if SERVER then
 	end)
 
 	hook.Add("PlayerCanPickupWeapon", "TTTShinigamiPickupWeapon", function(ply, wep)
-		if ply.SpawnedAsShinigami and WEPS.GetClass(wep) ~= "weapon_ttt_knife" then
+		if ply.SpawnedAsShinigami and WEPS.GetClass(wep) ~= "weapon_ttt_shinigamiknife" then
 			return false
 		end
 	end)

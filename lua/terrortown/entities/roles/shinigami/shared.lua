@@ -4,28 +4,26 @@ if SERVER then
 	resource.AddFile("materials/vgui/ttt/dynamic/roles/icon_shini.vmt")
 end
 
-ROLE.color = Color(200, 200, 200, 255) -- ...
-ROLE.dkcolor = Color(180, 180, 180, 255) -- ...
-ROLE.bgcolor = Color(200, 68, 81, 255) -- ...
-ROLE.abbr = "shini" -- abbreviation
-ROLE.surviveBonus = 0.5 -- bonus multiplier for every survive while another player was killed
-ROLE.scoreKillsMultiplier = 1 -- multiplier for kill of player of another team
-ROLE.scoreTeamKillsMultiplier = -8 -- multiplier for teamkill
-ROLE.unknownTeam = true -- disable team voice chat
-ROLE.disableSync = true -- dont tell the player about his role
-
-ROLE.conVarData = {
-	pct = 0.15, -- necessary: percentage of getting this role selected (per player)
-	maximum = 1, -- maximum amount of roles in a round
-	minPlayers = 6, -- minimum amount of players until this role is able to get selected
-	credits = 0, -- the starting credits of a specific role
-	togglable = false, -- option to toggle a role for a client if possible (F1 menu)
-	random = 50
-}
-
 function ROLE:PreInitialize()
+	self.color = Color(200, 200, 200, 255) -- ...
+	self.dkcolor = Color(180, 180, 180, 255) -- ...
+	self.bgcolor = Color(200, 68, 81, 255) -- ...
+	self.abbr = "shini" -- abbreviation
+	self.surviveBonus = 0.5 -- bonus multiplier for every survive while another player was killed
+	self.scoreKillsMultiplier = 1 -- multiplier for kill of player of another team
+	self.scoreTeamKillsMultiplier = -8 -- multiplier for teamkill
+	self.unknownTeam = true -- disable team voice chat
+	self.disableSync = true -- dont tell the player about his role
 	self.defaultTeam = TEAM_INNOCENT -- the team name: roles with same team name are working together
 	self.defaultEquipment = INNO_EQUIPMENT -- here you can set up your own default equipment
+	self.conVarData = {
+		pct = 0.15, -- necessary: percentage of getting this role selected (per player)
+		maximum = 1, -- maximum amount of roles in a round
+		minPlayers = 6, -- minimum amount of players until this role is able to get selected
+		credits = 0, -- the starting credits of a specific role
+		togglable = false, -- option to toggle a role for a client if possible (F1 menu)
+		random = 50
+	}
 end
 
 function ROLE:Initialize()
@@ -34,22 +32,20 @@ function ROLE:Initialize()
 	if CLIENT then
 		-- setup here is not necessary but if you want to access the role data, you need to start here
 		-- setup basic translation !
-		LANG.AddToLanguage("English", SHINIGAMI.name, "Shinigami")
-		LANG.AddToLanguage("English", "info_popup_" .. SHINIGAMI.name, [[You are a Shinigami! Try to kill the evil terrorists!]])
-		LANG.AddToLanguage("English", "body_found_" .. SHINIGAMI.abbr, "They were a Shinigami.")
-		LANG.AddToLanguage("English", "search_role_" .. SHINIGAMI.abbr, "This person was a Shinigami!")
-		LANG.AddToLanguage("English", "target_" .. SHINIGAMI.name, "Shinigami")
-		LANG.AddToLanguage("English", "ttt2_desc_" .. SHINIGAMI.name, [[The Shinigami is an Innocent (who works together with the other innocents) and the goal is to kill all evil roles ^^ The Shinigami is able to see the names of his enemies.]])
-
-		---------------------------------
+		LANG.AddToLanguage("English", self.name, "Shinigami")
+		LANG.AddToLanguage("English", "info_popup_" .. self.name, [[You are a Shinigami! Try to kill the evil terrorists!]])
+		LANG.AddToLanguage("English", "body_found_" .. self.abbr, "They were a Shinigami.")
+		LANG.AddToLanguage("English", "search_role_" .. self.abbr, "This person was a Shinigami!")
+		LANG.AddToLanguage("English", "target_" .. self.name, "Shinigami")
+		LANG.AddToLanguage("English", "ttt2_desc_" .. self.name, [[The Shinigami is an Innocent (who works together with the other innocents) and the goal is to kill all evil roles ^^ The Shinigami is able to see the names of his enemies.]])
 
 		-- maybe this language as well...
-		LANG.AddToLanguage("Deutsch", SHINIGAMI.name, "Shinigami")
-		LANG.AddToLanguage("Deutsch", "info_popup_" .. SHINIGAMI.name, [[Du bist ein Shinigami! Versuche die Bösen zu töten!]])
-		LANG.AddToLanguage("Deutsch", "body_found_" .. SHINIGAMI.abbr, "Er war ein Shinigami.")
-		LANG.AddToLanguage("Deutsch", "search_role_" .. SHINIGAMI.abbr, "Diese Person war ein Shinigami!")
-		LANG.AddToLanguage("Deutsch", "target_" .. SHINIGAMI.name, "Shinigami")
-		LANG.AddToLanguage("Deutsch", "ttt2_desc_" .. SHINIGAMI.name, [[Der Shinigami ist ein Innocent (der mit den anderen Innocent-Rollen zusammenarbeitet) und dessen Ziel es ist, alle bösen Rollen zu töten ^^ Er kann die Namen seiner Feinde sehen.]])
+		LANG.AddToLanguage("Deutsch", self.name, "Shinigami")
+		LANG.AddToLanguage("Deutsch", "info_popup_" .. self.name, [[Du bist ein Shinigami! Versuche die Bösen zu töten!]])
+		LANG.AddToLanguage("Deutsch", "body_found_" .. self.abbr, "Er war ein Shinigami.")
+		LANG.AddToLanguage("Deutsch", "search_role_" .. self.abbr, "Diese Person war ein Shinigami!")
+		LANG.AddToLanguage("Deutsch", "target_" .. self.name, "Shinigami")
+		LANG.AddToLanguage("Deutsch", "ttt2_desc_" .. self.name, [[Der Shinigami ist ein Innocent (der mit den anderen Innocent-Rollen zusammenarbeitet) und dessen Ziel es ist, alle bösen Rollen zu töten ^^ Er kann die Namen seiner Feinde sehen.]])
 	end
 end
 

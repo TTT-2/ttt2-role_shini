@@ -8,8 +8,6 @@ ROLE.color = Color(200, 200, 200, 255) -- ...
 ROLE.dkcolor = Color(180, 180, 180, 255) -- ...
 ROLE.bgcolor = Color(200, 68, 81, 255) -- ...
 ROLE.abbr = "shini" -- abbreviation
-ROLE.defaultTeam = TEAM_INNOCENT -- the team name: roles with same team name are working together
-ROLE.defaultEquipment = INNO_EQUIPMENT -- here you can set up your own default equipment
 ROLE.surviveBonus = 0.5 -- bonus multiplier for every survive while another player was killed
 ROLE.scoreKillsMultiplier = 1 -- multiplier for kill of player of another team
 ROLE.scoreTeamKillsMultiplier = -8 -- multiplier for teamkill
@@ -25,17 +23,14 @@ ROLE.conVarData = {
 	random = 50
 }
 
--- now link this subrole with its baserole
-hook.Add("TTT2BaseRoleInit", "TTT2ConBRTWithShini", function()
-	SHINIGAMI:SetBaseRole(ROLE_INNOCENT)
-end)
+function ROLE:PreInitialize()
+	self.defaultTeam = TEAM_INNOCENT -- the team name: roles with same team name are working together
+	self.defaultEquipment = INNO_EQUIPMENT -- here you can set up your own default equipment
+end
 
-hook.Add("TTT2RolesLoaded", "AddShinigamiTeam", function()
-	SHINIGAMI.defaultTeam = TEAM_INNOCENT
-end)
+function ROLE:Initialize()
+	roles.SetBaseRole(self, ROLE_INNOCENT)
 
--- if sync of roles has finished
-hook.Add("TTT2FinishedLoading", "ShinigamiInitT", function()
 	if CLIENT then
 		-- setup here is not necessary but if you want to access the role data, you need to start here
 		-- setup basic translation !
@@ -56,7 +51,7 @@ hook.Add("TTT2FinishedLoading", "ShinigamiInitT", function()
 		LANG.AddToLanguage("Deutsch", "target_" .. SHINIGAMI.name, "Shinigami")
 		LANG.AddToLanguage("Deutsch", "ttt2_desc_" .. SHINIGAMI.name, [[Der Shinigami ist ein Innocent (der mit den anderen Innocent-Rollen zusammenarbeitet) und dessen Ziel es ist, alle bösen Rollen zu töten ^^ Er kann die Namen seiner Feinde sehen.]])
 	end
-end)
+end
 
 if SERVER then
 	local shini_speed = CreateConVar("ttt2_shinigami_speed", "2", {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "The speed the shinigami has when he respawns (Def: 2)")

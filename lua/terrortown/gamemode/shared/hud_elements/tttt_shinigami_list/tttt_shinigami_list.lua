@@ -6,10 +6,10 @@ HUDELEMENT.Base = base
 
 if CLIENT then
 	local const_defaults = {
-							basepos = {x = 0, y = 0},
-							size = {w = 321, h = 36},
-							minsize = {w = 75, h = 36}
-		}
+		basepos = {x = 0, y = 0},
+		size = {w = 321, h = 36},
+		minsize = {w = 75, h = 36}
+	}
 
 	local element_height = 28
 	local margin = 5

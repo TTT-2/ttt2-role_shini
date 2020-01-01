@@ -5,9 +5,8 @@ if SERVER then
 end
 
 function ROLE:PreInitialize()
-	self.color = Color(200, 200, 200, 255) -- ...
-	self.dkcolor = Color(180, 180, 180, 255) -- ...
-	self.bgcolor = Color(200, 68, 81, 255) -- ...
+	self.color = Color(200, 200, 200, 255)
+
 	self.abbr = "shini" -- abbreviation
 	self.surviveBonus = 0.5 -- bonus multiplier for every survive while another player was killed
 	self.scoreKillsMultiplier = 1 -- multiplier for kill of player of another team
@@ -16,6 +15,7 @@ function ROLE:PreInitialize()
 	self.disableSync = true -- dont tell the player about his role
 	self.defaultTeam = TEAM_INNOCENT -- the team name: roles with same team name are working together
 	self.defaultEquipment = INNO_EQUIPMENT -- here you can set up your own default equipment
+
 	self.conVarData = {
 		pct = 0.15, -- necessary: percentage of getting this role selected (per player)
 		maximum = 1, -- maximum amount of roles in a round
@@ -30,8 +30,7 @@ function ROLE:Initialize()
 	roles.SetBaseRole(self, ROLE_INNOCENT)
 
 	if CLIENT then
-		-- setup here is not necessary but if you want to access the role data, you need to start here
-		-- setup basic translation !
+		-- Role specific language elements
 		LANG.AddToLanguage("English", self.name, "Shinigami")
 		LANG.AddToLanguage("English", "info_popup_" .. self.name, [[You are a Shinigami! Try to kill the evil terrorists!]])
 		LANG.AddToLanguage("English", "body_found_" .. self.abbr, "They were a Shinigami.")
@@ -39,7 +38,6 @@ function ROLE:Initialize()
 		LANG.AddToLanguage("English", "target_" .. self.name, "Shinigami")
 		LANG.AddToLanguage("English", "ttt2_desc_" .. self.name, [[The Shinigami is an Innocent (who works together with the other innocents) and the goal is to kill all evil roles ^^ The Shinigami is able to see the names of his enemies.]])
 
-		-- maybe this language as well...
 		LANG.AddToLanguage("Deutsch", self.name, "Shinigami")
 		LANG.AddToLanguage("Deutsch", "info_popup_" .. self.name, [[Du bist ein Shinigami! Versuche die Bösen zu töten!]])
 		LANG.AddToLanguage("Deutsch", "body_found_" .. self.abbr, "Er war ein Shinigami.")
@@ -140,5 +138,4 @@ if SERVER then
 			return ROLE_INNOCENT
 		end
 	end)
-
 end

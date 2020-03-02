@@ -28,27 +28,6 @@ end
 
 function ROLE:Initialize()
 	roles.SetBaseRole(self, ROLE_INNOCENT)
-
-	if CLIENT then
-		-- Role specific language elements
-		LANG.AddToLanguage("English", self.name, "Shinigami")
-		LANG.AddToLanguage("English", "info_popup_" .. self.name, [[You are a Shinigami! Try to kill the evil terrorists!]])
-		LANG.AddToLanguage("English", "body_found_" .. self.abbr, "They were a Shinigami.")
-		LANG.AddToLanguage("English", "search_role_" .. self.abbr, "This person was a Shinigami!")
-		LANG.AddToLanguage("English", "target_" .. self.name, "Shinigami")
-		LANG.AddToLanguage("English", "ttt2_desc_" .. self.name, [[The Shinigami is an Innocent (who works together with the other innocents) and the goal is to kill all evil roles ^^ The Shinigami is able to see the names of his enemies.]])
-
-		LANG.AddToLanguage("Deutsch", self.name, "Shinigami")
-		LANG.AddToLanguage("Deutsch", "info_popup_" .. self.name, [[Du bist ein Shinigami! Versuche die Bösen zu töten!]])
-		LANG.AddToLanguage("Deutsch", "body_found_" .. self.abbr, "Er war ein Shinigami.")
-		LANG.AddToLanguage("Deutsch", "search_role_" .. self.abbr, "Diese Person war ein Shinigami!")
-		LANG.AddToLanguage("Deutsch", "target_" .. self.name, "Shinigami")
-		LANG.AddToLanguage("Deutsch", "ttt2_desc_" .. self.name, [[Der Shinigami ist ein Innocent (der mit den anderen Innocent-Rollen zusammenarbeitet) und dessen Ziel es ist, alle bösen Rollen zu töten ^^ Er kann die Namen seiner Feinde sehen.]])
-
-		-- additional lang strings
-		LANG.AddToLanguage("English", "ttt2_shinigami_chat_jammed", "The Chat is jammed! You can't use the chat as a respawned Shinigami.")
-		LANG.AddToLanguage("Deutsch", "ttt2_shinigami_chat_jammed", "Der Chat ist blockiert! Du kannst den Chat als ein neu Gespawnter Shinigami nicht verwenden.")
-	end
 end
 
 if SERVER then
@@ -57,7 +36,7 @@ if SERVER then
 
 	local function ResetShinigami()
 		for _, ply in ipairs(player.GetAll()) do
-			ply:SetNWFloat("SpawnedAsShinigami", -1)
+			ply:SetNWBool("SpawnedAsShinigami", false)
 		end
 	end
 
@@ -79,12 +58,12 @@ if SERVER then
 	hook.Add("TTTBeginRound", "ResetShinigami", ResetShinigami)
 
 	hook.Add("TTT2PostPlayerDeath", "OnShinigamiDeath", function(victim, inflictor, attacker)
-		if victim:IsShinigami() and victim:GetNWBool("SpawnedAsShinigami", -1) == -1 and not victim.reviving then
+		if victim:IsShinigami() and not victim:GetNWBool("SpawnedAsShinigami") and not victim.reviving then
 			-- revive after 3s
 			victim:Revive(3, function(p) -- this is a TTT2 function that will handle everything else
 				p:StripWeapons()
 				p:Give("weapon_ttt_shinigamiknife")
-				p:SetNWFloat("SpawnedAsShinigami", CurTime())
+				p:SetNWBool("SpawnedAsShinigami", true)
 				SendFullStateUpdate()
 			end,
 			function(p) -- onCheck
@@ -96,7 +75,7 @@ if SERVER then
 	end)
 
 	hook.Add("PlayerCanPickupWeapon", "TTTShinigamiPickupWeapon", function(ply, wep)
-		if ply:GetNWBool("SpawnedAsShinigami", -1) ~= -1 and WEPS.GetClass(wep) ~= "weapon_ttt_shinigamiknife" then
+		if ply:IsShinigami() and ply:GetNWBool("SpawnedAsShinigami") and WEPS.GetClass(wep) ~= "weapon_ttt_shinigamiknife" then
 			return false
 		end
 	end)
@@ -105,8 +84,8 @@ if SERVER then
 		for _, v in ipairs(player.GetAll()) do
 			local time = CurTime()
 
-			if v:GetNWBool("SpawnedAsShinigami", -1) ~= -1 and v:GetNWBool("SpawnedAsShinigami", -1) + 1 <= time then
-				v:SetNWFloat("SpawnedAsShinigami", time + 1)
+			if v:IsActive() and v:IsTerror() and v:IsShinigami() and v:GetNWBool("SpawnedAsShinigami") and (v.ShiniLastDamageReceived or 0) + 1 <= time then
+				v.ShiniLastDamageReceived = time
 
 				v:TakeDamage(GetGlobalFloat(shini_health_loss:GetName(), 5), game.GetWorld())
 			end
@@ -114,7 +93,7 @@ if SERVER then
 	end)
 
 	hook.Add("TTTPlayerSpeedModifier", "ShinigamiModifySpeed", function(ply, _, _, noLag)
-		if IsValid(ply) and ply:GetNWBool("SpawnedAsShinigami", -1) ~= -1 then
+		if IsValid(ply) and ply:GetNWBool("SpawnedAsShinigami") then
 			noLag[1] = noLag[1] * GetGlobalFloat(shini_speed:GetName(), 2)
 		end
 	end)
@@ -122,13 +101,13 @@ if SERVER then
 	hook.Add("TTT2SpecialRoleSyncing", "TTT2RoleShiniMod", function(ply, tbl)
 		-- hide the role from all players
 		for shini in pairs(tbl) do
-			if shini:IsShinigami() and shini:GetNWBool("SpawnedAsShinigami", -1) == -1 then
+			if shini:IsShinigami() and not shini:GetNWBool("SpawnedAsShinigami") then
 				tbl[shini] = {ROLE_INNOCENT, TEAM_INNOCENT}
 			end
 		end
 
 		-- send all traitors to the shinigami
-		if ply:IsShinigami() and ply:GetNWBool("SpawnedAsShinigami", -1) ~= -1 then
+		if ply:IsShinigami() and ply:GetNWBool("SpawnedAsShinigami") then
 			for p in pairs(tbl) do
 				if p:GetTeam() == TEAM_TRAITOR then
 					tbl[p] = {p:GetSubRole(), TEAM_TRAITOR}
@@ -138,17 +117,13 @@ if SERVER then
 	end)
 
 	hook.Add("TTT2ModifyRadarRole", "TTT2ModifyRadarRole4Shini", function(ply, target)
-		if target:IsShinigami() and target:GetNWBool("SpawnedAsShinigami", -1) == -1 then
+		if target:IsShinigami() and not target:GetNWBool("SpawnedAsShinigami") then
 			return ROLE_INNOCENT
 		end
 	end)
 
 	hook.Add("TTT2AvoidGeneralChat", "TTT2ModifyGeneralChat4Shini", function(ply, text)
-		if not IsValid(ply) then return end
-
-		if ply:GetSubRole() ~= ROLE_SHINIGAMI then return end
-
-		if ply:GetNWBool("SpawnedAsShinigami", -1) == -1 then return end
+		if not IsValid(ply) or not ply:IsShinigami() or not ply:GetNWBool("SpawnedAsShinigami") then return end
 
 		LANG.Msg(ply, "ttt2_shinigami_chat_jammed", nil, MSG_CHAT_WARN)
 
@@ -157,11 +132,7 @@ if SERVER then
 end
 
 hook.Add("TTT2CanUseVoiceChat", "TTT2ModifyGeneralVoiceChat4Shini", function(speaker, listener)
-	if not IsValid(speaker) then return end
-
-	if speaker:GetSubRole() ~= ROLE_SHINIGAMI then return end
-
-	if speaker:GetNWBool("SpawnedAsShinigami", -1) == -1 then return end
+	if not IsValid(speaker) or not speaker:IsTerror() or not speaker:IsShinigami() or not speaker:GetNWBool("SpawnedAsShinigami") then return end
 
 	return false
 end)

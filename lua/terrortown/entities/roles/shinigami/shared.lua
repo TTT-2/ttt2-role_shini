@@ -129,6 +129,14 @@ if SERVER then
 
 		return false
 	end)
+
+	hook.Add("TTTOnCorpseCreated", "ModifyShiniRagdoll", function(rag, ply)
+		if not IsValid(ply) or not IsValid(rag) or not ply:IsShinigami() or ply:GetNWBool("SpawnedAsShinigami") then return end
+
+		rag.was_role = ROLE_INNOCENT
+		rag.role_color = INNOCENT.color
+
+	end)
 end
 
 hook.Add("TTT2CanUseVoiceChat", "TTT2ModifyGeneralVoiceChat4Shini", function(speaker, listener)

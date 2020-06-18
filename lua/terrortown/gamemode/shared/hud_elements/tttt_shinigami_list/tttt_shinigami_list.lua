@@ -43,7 +43,7 @@ if CLIENT then
 	function HUDELEMENT:ShouldDraw()
 		local client = LocalPlayer()
 
-		return HUDEditor.IsEditing or client:Alive() and client:IsShinigami()
+		return HUDEditor.IsEditing or client:Alive() and client:GetSubRole() == ROLE_SHINIGAMI
 	end
 
 	function HUDELEMENT:PerformLayout()

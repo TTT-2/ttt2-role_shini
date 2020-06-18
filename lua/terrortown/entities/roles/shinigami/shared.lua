@@ -58,7 +58,7 @@ if SERVER then
 	hook.Add("TTTBeginRound", "ResetShinigami", ResetShinigami)
 
 	hook.Add("TTT2PostPlayerDeath", "OnShinigamiDeath", function(victim, inflictor, attacker)
-		if victim:IsShinigami() and not victim:GetNWBool("SpawnedAsShinigami") and not victim.reviving then
+		if victim:GetSubRole() == ROLE_SHINIGAMI and not victim:GetNWBool("SpawnedAsShinigami") and not victim.reviving then
 			-- revive after 3s
 			victim:Revive(3, function(p) -- this is a TTT2 function that will handle everything else
 				p:StripWeapons()
@@ -67,7 +67,7 @@ if SERVER then
 				SendFullStateUpdate()
 			end,
 			function(p) -- onCheck
-				return p:IsShinigami()
+				return p:GetSubRole() == ROLE_SHINIGAMI
 			end,
 			false, true, -- there need to be your corpse and you don't prevent win
 			nil)
@@ -75,7 +75,7 @@ if SERVER then
 	end)
 
 	hook.Add("PlayerCanPickupWeapon", "TTTShinigamiPickupWeapon", function(ply, wep)
-		if ply:IsShinigami() and ply:GetNWBool("SpawnedAsShinigami") and WEPS.GetClass(wep) ~= "weapon_ttt_shinigamiknife" then
+		if ply:GetSubRole() == ROLE_SHINIGAMI and ply:GetNWBool("SpawnedAsShinigami") and WEPS.GetClass(wep) ~= "weapon_ttt_shinigamiknife" then
 			return false
 		end
 	end)
@@ -84,7 +84,7 @@ if SERVER then
 		for _, v in ipairs(player.GetAll()) do
 			local time = CurTime()
 
-			if v:IsActive() and v:IsTerror() and v:IsShinigami() and v:GetNWBool("SpawnedAsShinigami") and (v.ShiniLastDamageReceived or 0) + 1 <= time then
+			if v:IsActive() and v:IsTerror() and v:GetSubRole() == ROLE_SHINIGAMI and v:GetNWBool("SpawnedAsShinigami") and (v.ShiniLastDamageReceived or 0) + 1 <= time then
 				v.ShiniLastDamageReceived = time
 
 				v:TakeDamage(GetGlobalFloat(shini_health_loss:GetName(), 5), game.GetWorld())
@@ -101,13 +101,13 @@ if SERVER then
 	hook.Add("TTT2SpecialRoleSyncing", "TTT2RoleShiniMod", function(ply, tbl)
 		-- hide the role from all players
 		for shini in pairs(tbl) do
-			if shini:IsShinigami() and not shini:GetNWBool("SpawnedAsShinigami") then
+			if shini:GetSubRole() == ROLE_SHINIGAMI and not shini:GetNWBool("SpawnedAsShinigami") then
 				tbl[shini] = {ROLE_INNOCENT, TEAM_INNOCENT}
 			end
 		end
 
 		-- send all traitors to the shinigami
-		if ply:IsShinigami() and ply:GetNWBool("SpawnedAsShinigami") then
+		if ply:GetSubRole() == ROLE_SHINIGAMI and ply:GetNWBool("SpawnedAsShinigami") then
 			for p in pairs(tbl) do
 				if p:GetTeam() == TEAM_TRAITOR then
 					tbl[p] = {p:GetSubRole(), TEAM_TRAITOR}
@@ -117,13 +117,13 @@ if SERVER then
 	end)
 
 	hook.Add("TTT2ModifyRadarRole", "TTT2ModifyRadarRole4Shini", function(ply, target)
-		if target:IsShinigami() and not target:GetNWBool("SpawnedAsShinigami") then
+		if target:GetSubRole() == ROLE_SHINIGAMI and not target:GetNWBool("SpawnedAsShinigami") then
 			return ROLE_INNOCENT
 		end
 	end)
 
 	hook.Add("TTT2AvoidGeneralChat", "TTT2ModifyGeneralChat4Shini", function(ply, text)
-		if not IsValid(ply) or not ply:IsShinigami() or not ply:GetNWBool("SpawnedAsShinigami") then return end
+		if not IsValid(ply) or not ply:GetSubRole() == ROLE_SHINIGAMI or not ply:GetNWBool("SpawnedAsShinigami") then return end
 
 		LANG.Msg(ply, "ttt2_shinigami_chat_jammed", nil, MSG_CHAT_WARN)
 
@@ -131,7 +131,7 @@ if SERVER then
 	end)
 
 	hook.Add("TTTOnCorpseCreated", "ModifyShiniRagdoll", function(rag, ply)
-		if not IsValid(ply) or not IsValid(rag) or not ply:IsShinigami() or ply:GetNWBool("SpawnedAsShinigami") then return end
+		if not IsValid(ply) or not IsValid(rag) or not ply:GetSubRole() == ROLE_SHINIGAMI or ply:GetNWBool("SpawnedAsShinigami") then return end
 
 		rag.was_role = ROLE_INNOCENT
 		rag.role_color = INNOCENT.color
@@ -140,7 +140,7 @@ if SERVER then
 end
 
 hook.Add("TTT2CanUseVoiceChat", "TTT2ModifyGeneralVoiceChat4Shini", function(speaker, listener)
-	if not IsValid(speaker) or not speaker:IsTerror() or not speaker:IsShinigami() or not speaker:GetNWBool("SpawnedAsShinigami") then return end
+	if not IsValid(speaker) or not speaker:IsTerror() or not speaker:GetSubRole() == ROLE_SHINIGAMI or not speaker:GetNWBool("SpawnedAsShinigami") then return end
 
 	return false
 end)

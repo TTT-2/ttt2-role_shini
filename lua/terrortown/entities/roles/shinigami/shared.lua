@@ -123,7 +123,7 @@ if SERVER then
 	end)
 
 	hook.Add("TTT2AvoidGeneralChat", "TTT2ModifyGeneralChat4Shini", function(ply, text)
-		if not IsValid(ply) or not ply:GetSubRole() == ROLE_SHINIGAMI or not ply:GetNWBool("SpawnedAsShinigami") then return end
+		if not IsValid(ply) or ply:GetSubRole() ~= ROLE_SHINIGAMI or not ply:GetNWBool("SpawnedAsShinigami") then return end
 
 		LANG.Msg(ply, "ttt2_shinigami_chat_jammed", nil, MSG_CHAT_WARN)
 
@@ -131,7 +131,7 @@ if SERVER then
 	end)
 
 	hook.Add("TTTOnCorpseCreated", "ModifyShiniRagdoll", function(rag, ply)
-		if not IsValid(ply) or not IsValid(rag) or not ply:GetSubRole() == ROLE_SHINIGAMI or ply:GetNWBool("SpawnedAsShinigami") then return end
+		if not IsValid(ply) or not IsValid(rag) or ply:GetSubRole() ~= ROLE_SHINIGAMI or ply:GetNWBool("SpawnedAsShinigami") then return end
 
 		rag.was_role = ROLE_INNOCENT
 		rag.role_color = INNOCENT.color
@@ -140,7 +140,7 @@ if SERVER then
 end
 
 hook.Add("TTT2CanUseVoiceChat", "TTT2ModifyGeneralVoiceChat4Shini", function(speaker, listener)
-	if not IsValid(speaker) or not speaker:IsTerror() or not speaker:GetSubRole() == ROLE_SHINIGAMI or not speaker:GetNWBool("SpawnedAsShinigami") then return end
+	if not IsValid(speaker) or not speaker:IsTerror() or speaker:GetSubRole() ~= ROLE_SHINIGAMI or not speaker:GetNWBool("SpawnedAsShinigami") then return end
 
 	return false
 end)

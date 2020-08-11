@@ -144,3 +144,7 @@ hook.Add("TTT2CanUseVoiceChat", "TTT2ModifyGeneralVoiceChat4Shini", function(spe
 
 	return false
 end)
+
+hook.Add("TTT2ClientRadioCommand", "TTT2ModifyQuickChat4Shini", function()
+	return LocalPlayer():GetNWBool("SpawnedAsShinigami", false)
+end)

@@ -137,6 +137,11 @@ if SERVER then
 		rag.role_color = INNOCENT.color
 
 	end)
+
+	-- prevent radio commands
+	hook.Add("TTTPlayerRadioCommand", "TTT2ModifyQuickChat4Shini", function()
+		return LocalPlayer():GetNWBool("SpawnedAsShinigami", false)
+	end)
 end
 
 hook.Add("TTT2CanUseVoiceChat", "TTT2ModifyGeneralVoiceChat4Shini", function(speaker, listener)

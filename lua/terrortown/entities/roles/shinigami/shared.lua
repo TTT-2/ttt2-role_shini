@@ -30,6 +30,13 @@ function ROLE:Initialize()
 	roles.SetBaseRole(self, ROLE_INNOCENT)
 end
 
+hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicNecroCVars", function(tbl)
+	tbl[ROLE_SHINIGAMI] = tbl[ROLE_SHINIGAMI] or {}
+
+	table.insert(tbl[ROLE_SHINIGAMI], {cvar = "ttt2_shinigami_speed", slider = true, min = 0, max = 5, decimal = 2, desc = "Shinigami speed multiplier (Def: 2.00)"})
+	table.insert(tbl[ROLE_SHINIGAMI], {cvar = "ttt2_shinigami_health_loss", slider = true, min = 0, max = 100, decimal = 0, desc = "DPS for the Shinigami, when respawned (Def: 5)"})
+end)
+
 if SERVER then
 	local shini_speed = CreateConVar("ttt2_shinigami_speed", "2", {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "The speed the shinigami has when he respawns (Def: 2)")
 	local shini_health_loss = CreateConVar("ttt2_shinigami_health_loss", "5", {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "The amount of damage the shinigami receives every second after he respawns (Def: 5)")

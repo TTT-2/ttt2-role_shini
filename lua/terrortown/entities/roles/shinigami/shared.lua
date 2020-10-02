@@ -65,7 +65,8 @@ if SERVER then
 	hook.Add("TTTBeginRound", "ResetShinigami", ResetShinigami)
 
 	hook.Add("TTT2PostPlayerDeath", "OnShinigamiDeath", function(victim, inflictor, attacker)
-		if victim:GetSubRole() == ROLE_SHINIGAMI and not victim:GetNWBool("SpawnedAsShinigami") and not victim.reviving then
+		if victim:GetSubRole() ~= ROLE_SHINIGAMI or not IsValid(attacker) or not attacker:IsPlayer() or victim == attacker then return end
+		if victim:GetSubRole() == ROLE_SHINIGAMI and not victim:GetNWBool("SpawnedAsShinigami") and not victim.reviving and victim:IsGhost( ) == false and attacker:IsGhost( ) == false then
 			-- revive after 3s
 			victim:Revive(3, function(p) -- this is a TTT2 function that will handle everything else
 				p:StripWeapons()
@@ -100,7 +101,7 @@ if SERVER then
 	end)
 
 	hook.Add("TTTPlayerSpeedModifier", "ShinigamiModifySpeed", function(ply, _, _, noLag)
-		if IsValid(ply) and ply:GetNWBool("SpawnedAsShinigami") then
+		if IsValid(ply) and ply:GetNWBool("SpawnedAsShinigami") and ply:IsGhost( ) == false then
 			noLag[1] = noLag[1] * GetGlobalFloat(shini_speed:GetName(), 2)
 		end
 	end)

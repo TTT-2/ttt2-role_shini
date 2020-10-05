@@ -67,17 +67,19 @@ if SERVER then
 	hook.Add("TTT2PostPlayerDeath", "OnShinigamiDeath", function(victim, inflictor, attacker)
 		if victim:GetSubRole() == ROLE_SHINIGAMI and not victim:GetNWBool("SpawnedAsShinigami") and not victim.reviving then
 			-- revive after 3s
-			victim:Revive(3, function(p) -- this is a TTT2 function that will handle everything else
-				p:StripWeapons()
-				p:Give("weapon_ttt_shinigamiknife")
-				p:SetNWBool("SpawnedAsShinigami", true)
-				SendFullStateUpdate()
-			end,
-			function(p) -- onCheck
-				return p:GetSubRole() == ROLE_SHINIGAMI
-			end,
-			false, true, -- there need to be your corpse and you don't prevent win
-			nil)
+			victim:Revive(3,
+				function(p) -- this is a TTT2 function that will handle everything else
+					p:StripWeapons()
+					p:Give("weapon_ttt_shinigamiknife")
+					p:SetNWBool("SpawnedAsShinigami", true)
+					SendFullStateUpdate()
+				end,
+				function(p) -- onCheck
+					return p:GetSubRole() == ROLE_SHINIGAMI
+				end,
+				false, true, -- there need to be your corpse and you don't prevent win
+				nil
+			)
 		end
 	end)
 
@@ -96,12 +98,6 @@ if SERVER then
 
 				v:TakeDamage(GetGlobalFloat(shini_health_loss:GetName(), 5), game.GetWorld())
 			end
-		end
-	end)
-
-	hook.Add("TTTPlayerSpeedModifier", "ShinigamiModifySpeed", function(ply, _, _, noLag)
-		if IsValid(ply) and ply:GetNWBool("SpawnedAsShinigami") then
-			noLag[1] = noLag[1] * GetGlobalFloat(shini_speed:GetName(), 2)
 		end
 	end)
 
@@ -150,6 +146,12 @@ if SERVER then
 		return LocalPlayer():GetNWBool("SpawnedAsShinigami", false)
 	end)
 end
+
+hook.Add("TTTPlayerSpeedModifier", "ShinigamiModifySpeed", function(ply, _, _, noLag)
+	if not IsValid(ply) or not ply:GetNWBool("SpawnedAsShinigami") then return end
+
+	noLag[1] = noLag[1] * GetGlobalFloat("ttt2_shinigami_speed", 2)
+end)
 
 hook.Add("TTT2CanUseVoiceChat", "TTT2ModifyGeneralVoiceChat4Shini", function(speaker, listener)
 	if not IsValid(speaker) or not speaker:IsTerror() or speaker:GetSubRole() ~= ROLE_SHINIGAMI or not speaker:GetNWBool("SpawnedAsShinigami") then return end

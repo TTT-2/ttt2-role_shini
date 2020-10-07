@@ -30,7 +30,7 @@ function ROLE:Initialize()
 	roles.SetBaseRole(self, ROLE_INNOCENT)
 end
 
-hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicNecroCVars", function(tbl)
+hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicShiniCVars", function(tbl)
 	tbl[ROLE_SHINIGAMI] = tbl[ROLE_SHINIGAMI] or {}
 
 	table.insert(tbl[ROLE_SHINIGAMI], {cvar = "ttt2_shinigami_speed", slider = true, min = 0, max = 5, decimal = 2, desc = "Shinigami speed multiplier (Def: 2.00)"})

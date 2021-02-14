@@ -84,6 +84,7 @@ if SERVER then
 	end)
 
 	hook.Add("PlayerCanPickupWeapon", "TTTShinigamiPickupWeapon", function(ply, wep)
+		if SpecDM and (ply.IsGhost and ply:IsGhost()) then return end
 		if ply:GetSubRole() == ROLE_SHINIGAMI and ply:GetNWBool("SpawnedAsShinigami") and WEPS.GetClass(wep) ~= "weapon_ttt_shinigamiknife" then
 			return false
 		end

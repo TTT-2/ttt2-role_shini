@@ -148,7 +148,7 @@ if SERVER then
 end
 
 hook.Add("TTTPlayerSpeedModifier", "ShinigamiModifySpeed", function(ply, _, _, noLag)
-	if not IsValid(ply) or not ply:GetNWBool("SpawnedAsShinigami") then return end
+	if not IsValid(ply) or not ply:GetNWBool("SpawnedAsShinigami") or ply:GetSubRole() ~= ROLE_SHINIGAMI then return end
 
 	noLag[1] = noLag[1] * GetGlobalFloat("ttt2_shinigami_speed", 2)
 end)

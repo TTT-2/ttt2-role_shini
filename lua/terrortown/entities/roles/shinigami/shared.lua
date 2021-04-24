@@ -7,21 +7,21 @@ end
 function ROLE:PreInitialize()
 	self.color = Color(200, 200, 200, 255)
 
-	self.abbr = "shini" -- abbreviation
-	self.surviveBonus = 0.5 -- bonus multiplier for every survive while another player was killed
-	self.scoreKillsMultiplier = 1 -- multiplier for kill of player of another team
-	self.scoreTeamKillsMultiplier = -8 -- multiplier for teamkill
-	self.unknownTeam = true -- disable team voice chat
-	self.disableSync = true -- dont tell the player about his role
-	self.defaultTeam = TEAM_INNOCENT -- the team name: roles with same team name are working together
-	self.defaultEquipment = INNO_EQUIPMENT -- here you can set up your own default equipment
+	self.abbr = "shini"
+	self.score.killsMultiplier = 2
+	self.score.teamKillsMultiplier = -8
+	self.unknownTeam = true
+	self.disableSync = true
+
+	self.defaultTeam = TEAM_INNOCENT
+	self.defaultEquipment = INNO_EQUIPMENT
 
 	self.conVarData = {
-		pct = 0.15, -- necessary: percentage of getting this role selected (per player)
-		maximum = 1, -- maximum amount of roles in a round
-		minPlayers = 6, -- minimum amount of players until this role is able to get selected
-		credits = 0, -- the starting credits of a specific role
-		togglable = false, -- option to toggle a role for a client if possible (F1 menu)
+		pct = 0.15,
+		maximum = 1,
+		minPlayers = 6,
+		credits = 0,
+		togglable = false,
 		random = 50
 	}
 end

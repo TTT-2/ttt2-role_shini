@@ -8,11 +8,8 @@ function ROLE:PreInitialize()
 	self.color = Color(200, 200, 200, 255)
 
 	self.abbr = "shini"
-	self.score.surviveBonusMultiplier = 0.5
-	self.score.timelimitMultiplier = -0.5
 	self.score.killsMultiplier = 2
-	self.score.teamKillsMultiplier = -16
-	self.score.bodyFoundMuliplier = 0
+	self.score.teamKillsMultiplier = -8
 	self.unknownTeam = true
 	self.disableSync = true
 

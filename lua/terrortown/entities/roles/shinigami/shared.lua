@@ -126,12 +126,12 @@ if SERVER then
 	hook.Add("TTT2SpecialRoleSyncing", "TTT2RoleShiniMod", function(ply, tbl)
 		-- hide the role from all players
 		for shini in pairs(tbl) do
-			if shini:GetSubRole() == ROLE_SHINIGAMI and not shini:GetNWBool("SpawnedAsShinigami") then
-				if ply:GetSubRole() == ROLE_SHINIGAMI then -- show inno to the shini itself
-					tbl[shini] = {ROLE_INNOCENT, TEAM_INNOCENT}
-				else
-					tbl[shini] = {ROLE_NONE, TEAM_NONE} -- sync none to other players
-				end
+			if shini:GetSubRole() ~= ROLE_SHINIGAMI or shini:GetNWBool("SpawnedAsShinigami") then continue end
+
+			if shini == ply then -- show inno to the shini itself
+				tbl[shini] = {ROLE_INNOCENT, TEAM_INNOCENT}
+			else
+				tbl[shini] = {ROLE_NONE, TEAM_NONE} -- sync none to other players
 			end
 		end
 

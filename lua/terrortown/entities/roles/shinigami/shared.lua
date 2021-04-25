@@ -127,7 +127,11 @@ if SERVER then
 		-- hide the role from all players
 		for shini in pairs(tbl) do
 			if shini:GetSubRole() == ROLE_SHINIGAMI and not shini:GetNWBool("SpawnedAsShinigami") then
-				tbl[shini] = {ROLE_NONE, TEAM_NONE}
+				if ply:GetSubRole() == ROLE_SHINIGAMI then -- show inno to the shini itself
+					tbl[shini] = {ROLE_INNOCENT, TEAM_INNOCENT}
+				else
+					tbl[shini] = {ROLE_NONE, TEAM_NONE} -- sync none to other players
+				end
 			end
 		end
 

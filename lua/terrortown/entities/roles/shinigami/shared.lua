@@ -33,8 +33,23 @@ end
 hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicShiniCVars", function(tbl)
 	tbl[ROLE_SHINIGAMI] = tbl[ROLE_SHINIGAMI] or {}
 
-	table.insert(tbl[ROLE_SHINIGAMI], {cvar = "ttt2_shinigami_speed", slider = true, min = 0, max = 5, decimal = 2, desc = "Shinigami speed multiplier (Def: 2.00)"})
-	table.insert(tbl[ROLE_SHINIGAMI], {cvar = "ttt2_shinigami_health_loss", slider = true, min = 0, max = 100, decimal = 0, desc = "DPS for the Shinigami, when respawned (Def: 5)"})
+	table.insert(tbl[ROLE_SHINIGAMI], {
+		cvar = "ttt2_shinigami_speed",
+		slider = true,
+		min = 0,
+		max = 5,
+		decimal = 2,
+		desc = "Shinigami speed multiplier (Def: 2.00)"}
+	)
+
+	table.insert(tbl[ROLE_SHINIGAMI], {
+		cvar = "ttt2_shinigami_health_loss",
+		slider = true,
+		min = 0,
+		max = 100,
+		decimal = 0,
+		desc = "DPS for the Shinigami, when respawned (Def: 5)"}
+	)
 end)
 
 if SERVER then
@@ -69,15 +84,19 @@ if SERVER then
 			-- revive after 3s
 			victim:Revive(3,
 				function(p) -- this is a TTT2 function that will handle everything else
+					-- reset confirm Shini player, in case their body was confirmed
+					p:ResetConfirmPlayer()
+
 					p:StripWeapons()
 					p:Give("weapon_ttt_shinigamiknife")
 					p:SetNWBool("SpawnedAsShinigami", true)
+
 					SendFullStateUpdate()
 				end,
 				function(p) -- onCheck
 					return p:GetSubRole() == ROLE_SHINIGAMI
 				end,
-				false, true, -- there need to be your corpse and you don't prevent win
+				false, true, -- there need to be the corpse and the round end has to be prevented
 				nil
 			)
 		end
@@ -106,7 +125,7 @@ if SERVER then
 		-- hide the role from all players
 		for shini in pairs(tbl) do
 			if shini:GetSubRole() == ROLE_SHINIGAMI and not shini:GetNWBool("SpawnedAsShinigami") then
-				tbl[shini] = {ROLE_INNOCENT, TEAM_INNOCENT}
+				tbl[shini] = {ROLE_NONE, TEAM_NONE}
 			end
 		end
 

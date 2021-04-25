@@ -1,4 +1,4 @@
-L = LANG.GetLanguageTableReference("Русский")
+L = LANG.GetLanguageTableReference("ru")
 
 L[SHINIGAMI.name] = "Шинигами"
 L["info_popup_" .. SHINIGAMI.name] = [[Вы Шинигами! Попробуйте убить злых террористов!]]

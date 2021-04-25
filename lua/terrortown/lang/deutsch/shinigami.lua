@@ -1,4 +1,4 @@
-L = LANG.GetLanguageTableReference("deutsch")
+L = LANG.GetLanguageTableReference("de")
 
 L[SHINIGAMI.name] = "Shinigami"
 L["info_popup_" .. SHINIGAMI.name] = [[Du bist ein Shinigami! Versuche die Bösen zu töten!]]

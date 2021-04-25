@@ -10,3 +10,4 @@ y obtendrá velocidad y daño pero su vida decae con el tiempo, considéralo una
 comunicarse con su equipo.]]
 
 L["ttt2_shinigami_chat_jammed"] = "¡El chat está prohibido! No puedes usar el chat siendo Shinigami."
+--L["ttt2_shinigami_revive"] = "You are revived as a Shinigami. Take your knife, be quiet and kill those pesky Traitors!"

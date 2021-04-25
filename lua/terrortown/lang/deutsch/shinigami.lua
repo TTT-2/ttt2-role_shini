@@ -8,3 +8,4 @@ L["target_" .. SHINIGAMI.name] = "Shinigami"
 L["ttt2_desc_" .. SHINIGAMI.name] = [[Der Shinigami ist ein Innocent (der mit den anderen Innocent-Rollen zusammenarbeitet) und dessen Ziel es ist, alle bösen Rollen zu töten ^^ Er kann die Namen seiner Feinde sehen.]]
 
 L["ttt2_shinigami_chat_jammed"] = "Der Chat ist blockiert! Du kannst den Chat als ein neu Gespawnter Shinigami nicht verwenden."
+L["ttt2_shinigami_revive"] = "Du wirst als ein Shinigami wiederbelebt. Nimm dein Messer, sei leise und töte diese nervigen Verräter!"

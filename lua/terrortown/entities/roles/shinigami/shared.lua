@@ -99,6 +99,8 @@ if SERVER then
 				false, true, -- there need to be the corpse and the round end has to be prevented
 				nil
 			)
+
+			victim:SendRevivalReason("ttt2_shinigami_revive")
 		end
 	end)
 

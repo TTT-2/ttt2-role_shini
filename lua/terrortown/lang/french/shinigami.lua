@@ -9,3 +9,4 @@ L["ttt2_desc_" .. SHINIGAMI.name] = [[Le Shinigami est un Innocent (qui travaill
 mais votre vie va descendre avec le temps, considérez cela comme une dernière chance de collaborer. De plus, vous pourrez voir les traîtres vivants mais vous ne pourrez pas communiquer avec votre équipe.]]
 
 L["ttt2_shinigami_chat_jammed"] = "Le Chat est bloqué ! Vous ne pouvez pas utiliser le chat quand vous êtes ressusciter en tant que Shinigami."
+--L["ttt2_shinigami_revive"] = "You are revived as a Shinigami. Take your knife, be quiet and kill those pesky Traitors!"

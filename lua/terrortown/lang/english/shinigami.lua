@@ -8,3 +8,4 @@ L["target_" .. SHINIGAMI.name] = "Shinigami"
 L["ttt2_desc_" .. SHINIGAMI.name] = [[The Shinigami is an Innocent (who works together with the other innocents) and the goal is to kill all evil roles ^^ The Shinigami is able to see the names of his enemies.]]
 
 L["ttt2_shinigami_chat_jammed"] = "The Chat is jammed! You can't use the chat as a respawned Shinigami."
+L["ttt2_shinigami_revive"] = "You are revived as a Shinigami. Take your knife, be quiet and kill those pesky Traitors!"

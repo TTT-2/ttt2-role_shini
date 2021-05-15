@@ -169,7 +169,9 @@ if SERVER then
 
 	-- prevent radio commands
 	hook.Add("TTTPlayerRadioCommand", "TTT2ModifyQuickChat4Shini", function(ply, msg_name, msg_target)
-		return ply:GetNWBool("SpawnedAsShinigami", false)
+		if ply:GetNWBool("SpawnedAsShinigami", false) then
+			return true
+		end
 	end)
 end
 
@@ -186,5 +188,7 @@ hook.Add("TTT2CanUseVoiceChat", "TTT2ModifyGeneralVoiceChat4Shini", function(spe
 end)
 
 hook.Add("TTT2ClientRadioCommand", "TTT2ModifyQuickChat4Shini", function()
-	return LocalPlayer():GetNWBool("SpawnedAsShinigami", false)
+	if LocalPlayer():GetNWBool("SpawnedAsShinigami", false) then
+		return true
+	end
 end)

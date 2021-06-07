@@ -39,6 +39,8 @@ SWEP.Secondary.Ammo = "none"
 SWEP.Secondary.Delay = 1.4
 
 SWEP.Kind = WEAPON_ROLE
+SWEP.CanBuy = nil
+SWEP.notBuyable = true
 SWEP.IsSilent = true
 SWEP.AllowDrop = false
 SWEP.NoSights = true

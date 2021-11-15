@@ -96,7 +96,7 @@ if SERVER then
 				function(p) -- onCheck
 					return p:GetSubRole() == ROLE_SHINIGAMI
 				end,
-				false, true, -- there need to be the corpse and the round end has to be prevented
+				false, REVIVAL_BLOCK_AS_ALIVE, -- there need to be the corpse and the round end has to be prevented
 				nil
 			)
 

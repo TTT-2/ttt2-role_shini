@@ -43,6 +43,12 @@ hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicShiniCVars", function(tbl)
 	tbl[ROLE_SHINIGAMI] = tbl[ROLE_SHINIGAMI] or {}
 
 	table.insert(tbl[ROLE_SHINIGAMI], {
+		cvar = "ttt2_shinigami_announcement",
+		checkbox = true,
+		desc = "Announce when a shinigami is being respawned (Def. 0)"
+	})
+
+	table.insert(tbl[ROLE_SHINIGAMI], {
 		cvar = "ttt2_shinigami_speed",
 		slider = true,
 		min = 0,
@@ -62,6 +68,7 @@ hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicShiniCVars", function(tbl)
 end)
 
 if SERVER then
+	local shini_announcement = CreateConVar("ttt2_shinigami_announcement", "0", {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "Announce the shinigami being respawned (Def: 0)")
 	local shini_speed = CreateConVar("ttt2_shinigami_speed", "2", {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "The speed the shinigami has when he respawns (Def: 2)")
 	local shini_health_loss = CreateConVar("ttt2_shinigami_health_loss", "5", {FCVAR_ARCHIVE, FCVAR_NOTIFY}, "The amount of damage the shinigami receives every second after he respawns (Def: 5)")
 
@@ -101,6 +108,11 @@ if SERVER then
 					p:SetNWBool("SpawnedAsShinigami", true)
 
 					SendFullStateUpdate()
+
+					-- NOTIFY ALL PLAYERS THAT THE SHINIGAMI HAS RESPAWNED
+					if shini_announcement:GetBool() then
+						LANG.MsgAll("ttt2_role_shinigami_info_spawned", nil, MSG_MSTACK_WARN)
+					end
 				end,
 				function(p) -- onCheck
 					return p:GetSubRole() == ROLE_SHINIGAMI
@@ -201,3 +213,31 @@ hook.Add("TTT2ClientRadioCommand", "TTT2ModifyQuickChat4Shini", function()
 		return true
 	end
 end)
+
+
+if CLIENT then
+	function ROLE:AddToSettingsMenu(parent)
+		local form = vgui.CreateTTT2Form(parent, "header_roles_additional")
+
+		form:MakeCheckBox({
+			serverConvar = "ttt2_shinigami_announcement",
+			label = "label_shinigami_announcement"
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt2_shinigami_speed",
+			label = "label_shinigami_speed",
+			min = 0,
+			max = 5,
+			decimal = 2
+		})
+
+		form:MakeSlider({
+			serverConvar = "ttt2_shinigami_health_loss",
+			label = "label_shinigami_health_loss",
+			min = 0,
+			max = 100,
+			decimal = 0
+		})
+	end
+end

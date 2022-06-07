@@ -30,6 +30,15 @@ function ROLE:Initialize()
 	roles.SetBaseRole(self, ROLE_INNOCENT)
 end
 
+function ROLE:RemoveRoleLoadout(ply, isRoleChange)
+	-- give back normal player loadout
+	ply:GiveEquipmentWeapon("weapon_zm_improvised")
+	ply:GiveEquipmentWeapon("weapon_zm_carry")
+	ply:GiveEquipmentWeapon("weapon_ttt_unarmed")
+
+	ply:StripWeapon("weapon_ttt_shinigamiknife")
+end
+
 hook.Add("TTTUlxDynamicRCVars", "TTTUlxDynamicShiniCVars", function(tbl)
 	tbl[ROLE_SHINIGAMI] = tbl[ROLE_SHINIGAMI] or {}
 
@@ -88,7 +97,7 @@ if SERVER then
 					p:ResetConfirmPlayer()
 
 					p:StripWeapons()
-					p:Give("weapon_ttt_shinigamiknife")
+					p:GiveEquipmentWeapon("weapon_ttt_shinigamiknife")
 					p:SetNWBool("SpawnedAsShinigami", true)
 
 					SendFullStateUpdate()

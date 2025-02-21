@@ -94,6 +94,7 @@ if SERVER then
 	hook.Add("TTTEndRound", "ResetShinigami", ResetShinigami)
 	hook.Add("TTTPrepareRound", "ResetShinigami", ResetShinigami)
 	hook.Add("TTTBeginRound", "ResetShinigami", ResetShinigami)
+	hook.Add("TTT2UpdateSubrole", "ResetShinigami", ResetShinigami)
 
 	hook.Add("TTT2PostPlayerDeath", "OnShinigamiDeath", function(victim, inflictor, attacker)
 		if victim:GetSubRole() == ROLE_SHINIGAMI and not victim:GetNWBool("SpawnedAsShinigami") and not victim.reviving then

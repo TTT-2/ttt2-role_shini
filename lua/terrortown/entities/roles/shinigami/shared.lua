@@ -238,12 +238,10 @@ elseif SERVER then
 		return false
 	end)
 
-	hook.Add("TTT2AvoidLastWords", "TTT2ModifyGeneralChat4Shini", function(ply, text)
+	hook.Add("TTTLastWordsMsg", "TTT2ModifyLastWords4Shini", function(ply, msg, msgOriginal)
 		if not IsValid(ply) or ply:GetSubRole() ~= ROLE_SHINIGAMI or not ply:GetNWBool("SpawnedAsShinigami") then return end
 
-		LANG.Msg(ply, "ttt2_shinigami_chat_jammed", nil, MSG_CHAT_WARN)
-
-		return false
+		return true
 	end)
 
 	hook.Add("TTTOnCorpseCreated", "ModifyShiniRagdoll", function(rag, ply)
